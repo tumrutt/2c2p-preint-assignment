@@ -24,7 +24,7 @@ def create_table():
     create_table_query = """
         CREATE TABLE IF NOT EXISTS transactions (
             transaction_id TEXT PRIMARY KEY,
-            payment_amount REAL NOT NULL CHECK (payment_amount >= 0),
+            payment_amount REAL NOT NULL CHECK (payment_amount > 0),
             currency TEXT NOT NULL CHECK (length(currency) = 3),
             created_at INTEGER NOT NULL
         );
