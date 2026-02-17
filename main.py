@@ -14,6 +14,25 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
+@app.get("/")
+def get_transactions():
+    with get_db_connection() as con:
+        cur = con.execute(
+            "SELECT transaction_id, payment_amount, currency, created_at FROM transactions;"
+        )
+        rows = cur.fetchall()
+
+    return [
+        {
+            "transaction_id": row[0],
+            "payment_amount": row[1],
+            "currency": row[2],
+            "created_at": row[3],
+        }
+        for row in rows
+    ]
+
+
 @app.get("/statistics")
 def statistics(currency: str):
     currency = currency.upper()
